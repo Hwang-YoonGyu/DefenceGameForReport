@@ -23,7 +23,6 @@ public class bullet : MonoBehaviour
         }
         if (other.tag == "zombie") {
             Destroy(this.gameObject);
-            Debug.Log("좀비한테 맞았음");
         }
     }
     private void dest()

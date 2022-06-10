@@ -33,7 +33,7 @@ public class ZombieMove : MonoBehaviour
 
 			if (Vector3.Distance(playerTr.position, transform.position) <= 2.0f)
 			{
-				nvAgent.isStopped = true;
+				nvAgent.isStopped = true;				
 				ani.SetBool("attack", true);
 			}
 			else
@@ -52,10 +52,16 @@ public class ZombieMove : MonoBehaviour
 			nvAgent.isStopped = true;
 			islive = false;
 			Invoke("dest",3.0f);
+			ani.SetBool("attack", false);
 			ani.SetBool("die", true);
+			gameObject.GetComponent<BoxCollider>().enabled = false;
+		}
+		if (other.tag == "Player") {
+			playerTr.gameObject.GetComponent<PlayerMove>().MinusHP();
+			Debug.Log("플레이어 공격함");
 		}
 
-    }
+	}
     private void dest()
     {
 		Destroy(this.gameObject);

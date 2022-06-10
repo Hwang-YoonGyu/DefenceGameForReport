@@ -357,6 +357,7 @@
 "Assets/JMO Assets/WarFX/Scripts/WFX_LightFlicker.cs"
 "Assets/JMO Assets/WarFX/Spawn System/CFX_SpawnSystem.cs"
 "Assets/PlayerMove.cs"
+"Assets/SpawnZombie.cs"
 "Assets/TPSforWindow.cs"
 "Assets/ZombieMove.cs"
 -langversion:9.0

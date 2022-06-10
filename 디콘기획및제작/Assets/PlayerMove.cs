@@ -14,20 +14,74 @@ public class PlayerMove : MonoBehaviour
     public Animator ani;
     public ParticleSystem part;
     public GameObject bullet;
-    private bool moveSwitch = true;
-    private bool shootCool = true;
-    private int bulletCount = 30;
+    public bool moveSwitch;
+    private bool shootCool;
+    public int bulletCount;
+    public int hp;
+    public float time;
+    private bool islive = false;
 
-    public TextMeshProUGUI text;
+    public TextMeshProUGUI megagine;
+    public TextMeshProUGUI hpText;
+    public TextMeshProUGUI DieText;
+    public TextMeshProUGUI ScoreText;
+    public Button gameStartBtn;
+
+    public SpawnZombie s1;
+    public SpawnZombie s2;
+    public SpawnZombie s3;
+    public SpawnZombie s4;
     // Start is called before the first frame update
     void Start()
     {
-        
+        gameStartBtn.onClick.AddListener(gameStart);
+    }
+    public void gameStart() {
+        hp = 5;
+        islive = true;
+        shootCool = true;
+        time = 0.0f;
+        moveSwitch = true;
+        s1.GameStart();
+        s2.GameStart();
+        s3.GameStart();
+        s4.GameStart();
+        gameStartBtn.gameObject.SetActive(false);
+    }
+    public void MinusHP() {
+        hp--;
+        string temp = "";
+        for (int i = 0; i < hp; i++) {
+            temp += "¢¾";
+        }
+        hpText.text = temp;
+        if (hp == 0) {
+            PrintDie();
+        }
     }
 
+    void PrintDie() {
+        StartCoroutine(Die());
+    }
+
+    IEnumerator Die() {
+        float t = 0;
+        islive = false;
+        moveSwitch = false;
+        while (true) {
+            t += Time.deltaTime;
+            DieText.color = new Color(1,0,0,t*0.5f);
+
+            if (t > 2.0f) {
+                break;
+            }
+            yield return null;
+        }
+    }
     // Update is called once per frame
     void Update()
     {
+
         Camera.transform.position = new Vector3(Character.transform.position.x, 25, Character.transform.position.z-15);
         if (moveSwitch)
         {
@@ -37,7 +91,7 @@ public class PlayerMove : MonoBehaviour
             ani.SetBool("isMove", false);
         }
         if (Input.GetMouseButtonDown(0)) {
-            if (shootCool)
+            if (shootCool && (bulletCount > 0))
             {
                 ani.SetBool("isMove", false);
                 moveSwitch = false;
@@ -48,7 +102,7 @@ public class PlayerMove : MonoBehaviour
                 {
                     Character.transform.LookAt(hit.point + new Vector3(0, 2, 0) - new Vector3(0,hit.point.y,0));
                     bulletCount--;
-                    text.text = bulletCount +" / 30";
+                    megagine.text = bulletCount +" / 30";
                     StartCoroutine(shotGun());
                 }
             }
@@ -64,7 +118,11 @@ public class PlayerMove : MonoBehaviour
             StartCoroutine(reloading());
 
         }
-
+        if (islive)
+        {
+            time += Time.deltaTime;
+            ScoreText.text = "Score : " + ((int)time).ToString();
+        }
     }
 
     IEnumerator shotGun() {
@@ -90,18 +148,11 @@ public class PlayerMove : MonoBehaviour
         {
             t += Time.deltaTime;
             if (t >= 1.0f)
-            {
-                if (bulletCount == 0)
-                {
-                    bulletCount = 30;
-                }
-                else {
-                    bulletCount = 31;
-
-                }
-                text.text = bulletCount + " / 30";
-                moveSwitch = true;
-                break;
+            {   
+               bulletCount = 30;
+               megagine.text = bulletCount + " / 30";
+               moveSwitch = true;
+               break;
             }
             yield return null;
         }
