@@ -108,13 +108,13 @@ public class PlayerMove : MonoBehaviour
             }
 
         }
-        if (Input.GetMouseButtonUp(0))
+        if (Input.GetMouseButtonUp(0) && islive)
         {
             moveSwitch = true;
             ani.SetBool("shoot", false);
 
         }
-        if (Input.GetKey(KeyCode.R)) {
+        if (Input.GetKey(KeyCode.R) && islive) {
             StartCoroutine(reloading());
 
         }
