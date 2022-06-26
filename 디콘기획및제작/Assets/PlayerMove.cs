@@ -97,10 +97,10 @@ public class PlayerMove : MonoBehaviour
                 moveSwitch = false;
                 ani.SetBool("shoot", true);
                 RaycastHit hit;
-                if (Physics.Raycast(Camera.GetComponent<Camera>().ScreenPointToRay(Input.mousePosition),
-                            out hit, Mathf.Infinity))
+                if (Physics.Raycast(Camera.GetComponent<Camera>().ScreenPointToRay(Input.mousePosition),out hit, Mathf.Infinity))
                 {
-                    Character.transform.LookAt(hit.point + new Vector3(0, 2, 0) - new Vector3(0,hit.point.y,0));
+                    Character.transform.LookAt(hit.point);
+                    Character.transform.Rotate(new Vector3(-Character.transform.rotation.x,0, -Character.transform.rotation.z));
                     bulletCount--;
                     megagine.text = bulletCount +" / 30";
                     StartCoroutine(shotGun());
